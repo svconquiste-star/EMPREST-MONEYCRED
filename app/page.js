@@ -97,6 +97,21 @@ export default function Page() {
           </div>
 
           <div className="form-group">
+            <label className="label" htmlFor="ocupacao">
+              Cargo/Função/Ocupação *
+            </label>
+            <input
+              id="ocupacao"
+              className={`input ${errors.ocupacao ? 'input-error' : ''}`}
+              value={ocupacao}
+              onChange={(e) => setOcupacao(e.target.value)}
+              placeholder="Ex: Cabeleireiro"
+              autoComplete="organization-title"
+            />
+            {errors.ocupacao && <span className="error-message">{errors.ocupacao}</span>}
+          </div>
+
+          <div className="form-group">
             <label className="label" htmlFor="telefone">
               Telefone *
             </label>
@@ -146,21 +161,6 @@ export default function Page() {
               autoComplete="address-level2"
             />
             {errors.cidade && <span className="error-message">{errors.cidade}</span>}
-          </div>
-
-          <div className="form-group">
-            <label className="label" htmlFor="ocupacao">
-              Cargo/Função/Ocupação *
-            </label>
-            <input
-              id="ocupacao"
-              className={`input ${errors.ocupacao ? 'input-error' : ''}`}
-              value={ocupacao}
-              onChange={(e) => setOcupacao(e.target.value)}
-              placeholder="Ex: Cabeleireiro"
-              autoComplete="organization-title"
-            />
-            {errors.ocupacao && <span className="error-message">{errors.ocupacao}</span>}
           </div>
 
           <div className="cta">
