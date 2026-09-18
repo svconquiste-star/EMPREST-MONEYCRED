@@ -13,6 +13,7 @@ export default function Page() {
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
   const [cidade, setCidade] = useState('');
+  const [ocupacao, setOcupacao] = useState('');
   const [errors, setErrors] = useState({});
 
   const phoneDigits = useMemo(() => String(telefone || '').replace(/\D/g, ''), [telefone]);
@@ -28,7 +29,8 @@ export default function Page() {
     nome.trim().length > 1 &&
     phoneResult.valid &&
     emailValid &&
-    cidade.trim().length > 1
+    cidade.trim().length > 1 &&
+    ocupacao.trim().length > 1
   );
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export default function Page() {
     if (!phoneResult.valid) newErrors.telefone = phoneResult.error || 'Telefone inválido';
     if (email && !emailValid) newErrors.email = 'Email inválido';
     if (!cidade.trim()) newErrors.cidade = 'Cidade é obrigatória';
+    if (!ocupacao.trim()) newErrors.ocupacao = 'Ocupação é obrigatória';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -53,6 +56,7 @@ export default function Page() {
       nome: nome.trim(),
       cidade: cidade.trim(),
       telefone: phoneDisplay || phoneDigits,
+      ocupacao: ocupacao.trim(),
     });
 
     window.open(link, '_blank', 'noopener,noreferrer');
@@ -62,6 +66,7 @@ export default function Page() {
       telefone: phoneDigits,
       email: email.trim() || undefined,
       cidade: cidade.trim(),
+      ocupacao: ocupacao.trim(),
     });
   };
 
@@ -141,6 +146,21 @@ export default function Page() {
               autoComplete="address-level2"
             />
             {errors.cidade && <span className="error-message">{errors.cidade}</span>}
+          </div>
+
+          <div className="form-group">
+            <label className="label" htmlFor="ocupacao">
+              Cargo/Função/Ocupação *
+            </label>
+            <input
+              id="ocupacao"
+              className={`input ${errors.ocupacao ? 'input-error' : ''}`}
+              value={ocupacao}
+              onChange={(e) => setOcupacao(e.target.value)}
+              placeholder="Ex: Cabeleireiro"
+              autoComplete="organization-title"
+            />
+            {errors.ocupacao && <span className="error-message">{errors.ocupacao}</span>}
           </div>
 
           <div className="cta">
