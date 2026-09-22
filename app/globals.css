@@ -91,12 +91,55 @@ button {
   font-size: 15px;
 }
 
+/* ── Step indicator ── */
+
+.step-indicator {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 16px 0 -4px;
+}
+
 /* ── Form ── */
 
 .form {
   display: grid;
   gap: 16px;
   margin-top: 20px;
+}
+
+.radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 14px;
+  padding: 13px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.radio-option input {
+  accent-color: var(--brand);
+}
+
+.radio-option.selected {
+  border-color: var(--brand);
+  background: rgba(250, 142, 0, 0.08);
+  color: var(--brand-dark);
 }
 
 .form-group {
@@ -191,6 +234,21 @@ button {
 
 .btn-whatsapp i {
   font-size: 20px;
+}
+
+.btn-back {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+}
+
+.btn-back:hover {
+  color: var(--text);
 }
 
 /* ── Trust ── */

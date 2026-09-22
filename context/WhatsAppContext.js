@@ -10,12 +10,19 @@ const WhatsAppContext = createContext({
 });
 
 export function WhatsAppProvider({ children }) {
-  const buildLink = ({ nome, cidade, telefone, ocupacao }) => {
+  const buildLink = ({ nome, cidade, telefone, ocupacao, vinculo, empresa, rendaMensal, valorDesejado }) => {
     const n = nome ? nome.trim() : '[NOME]';
     const c = cidade ? cidade.trim() : '[CIDADE]';
     const t = telefone || '[TELEFONE]';
     const o = ocupacao ? ocupacao.trim() : '[OCUPACAO]';
-    const message = `Olá! Sou ${n}, sou ${o} e moro em ${c}, gostaria de um empréstimo. Meu telefone é ${t}.`;
+    const valor = valorDesejado || '[VALOR]';
+
+    let message = `Olá! Sou ${n}, sou ${o} (${vinculo || '[VÍNCULO]'}) e moro em ${c}.`;
+    if (vinculo === 'PJ') {
+      message += ` Minha empresa é ${empresa ? empresa.trim() : '[EMPRESA]'}, com renda mensal de R$ ${rendaMensal || '[RENDA]'}.`;
+    }
+    message += ` Gostaria de solicitar um empréstimo no valor de R$ ${valor}. Meu telefone é ${t}.`;
+
     return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
   };
 
