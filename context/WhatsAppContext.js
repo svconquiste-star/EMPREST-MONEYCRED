@@ -19,9 +19,9 @@ export function WhatsAppProvider({ children }) {
 
     let message = `Olá! Sou ${n}, sou ${o} (${vinculo || '[VÍNCULO]'}) e moro em ${c}.`;
     if (vinculo === 'PJ') {
-      message += ` Minha empresa é ${empresa ? empresa.trim() : '[EMPRESA]'}, com renda mensal de R$ ${rendaMensal || '[RENDA]'}.`;
+      message += ` Minha empresa é ${empresa ? empresa.trim() : '[EMPRESA]'}.`;
     }
-    message += ` Gostaria de solicitar um empréstimo no valor de R$ ${valor}. Meu telefone é ${t}.`;
+    message += ` Minha renda mensal é de R$ ${rendaMensal || '[RENDA]'}. Gostaria de solicitar um empréstimo no valor de R$ ${valor}. Meu telefone é ${t}.`;
 
     return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
   };

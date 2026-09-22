@@ -47,8 +47,9 @@ export default function Page() {
   const canSubmit = Boolean(
     ocupacao.trim().length > 1 &&
     (vinculo === 'CLT' || vinculo === 'PJ') &&
+    rendaMensalNumber > 0 &&
     valorDesejadoNumber > 0 &&
-    (vinculo !== 'PJ' || (empresa.trim().length > 1 && rendaMensalNumber > 0))
+    (vinculo !== 'PJ' || empresa.trim().length > 1)
   );
 
   useEffect(() => {
@@ -80,11 +81,9 @@ export default function Page() {
     const newErrors = {};
     if (!ocupacao.trim()) newErrors.ocupacao = 'Ocupação é obrigatória';
     if (vinculo !== 'CLT' && vinculo !== 'PJ') newErrors.vinculo = 'Selecione uma opção';
+    if (!rendaMensalNumber) newErrors.rendaMensal = 'Renda mensal é obrigatória';
     if (!valorDesejadoNumber) newErrors.valorDesejado = 'Valor desejado é obrigatório';
-    if (vinculo === 'PJ') {
-      if (!empresa.trim()) newErrors.empresa = 'Nome da empresa é obrigatório';
-      if (!rendaMensalNumber) newErrors.rendaMensal = 'Renda mensal é obrigatória';
-    }
+    if (vinculo === 'PJ' && !empresa.trim()) newErrors.empresa = 'Nome da empresa é obrigatório';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -274,22 +273,20 @@ export default function Page() {
                 </div>
               )}
 
-              {vinculo === 'PJ' && (
-                <div className="form-group">
-                  <label className="label" htmlFor="rendaMensal">
-                    Renda Mensal *
-                  </label>
-                  <input
-                    id="rendaMensal"
-                    className={`input ${errors.rendaMensal ? 'input-error' : ''}`}
-                    value={rendaMensal}
-                    onChange={(e) => setRendaMensal(formatCurrencyDigits(e.target.value))}
-                    placeholder="Ex: 3.500"
-                    inputMode="numeric"
-                  />
-                  {errors.rendaMensal && <span className="error-message">{errors.rendaMensal}</span>}
-                </div>
-              )}
+              <div className="form-group">
+                <label className="label" htmlFor="rendaMensal">
+                  Renda Mensal *
+                </label>
+                <input
+                  id="rendaMensal"
+                  className={`input ${errors.rendaMensal ? 'input-error' : ''}`}
+                  value={rendaMensal}
+                  onChange={(e) => setRendaMensal(formatCurrencyDigits(e.target.value))}
+                  placeholder="Ex: 3.500"
+                  inputMode="numeric"
+                />
+                {errors.rendaMensal && <span className="error-message">{errors.rendaMensal}</span>}
+              </div>
 
               <div className="form-group">
                 <label className="label" htmlFor="valorDesejado">
