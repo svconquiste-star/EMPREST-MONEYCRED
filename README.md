@@ -41,14 +41,23 @@ app/
   page.js            - Página principal (formulário + tracking)
   providers.js       - Providers de contexto
   globals.css        - Estilos globais
+  api/
+    save-contact/    - Rota que persiste o lead no banco (Prisma)
 lib/
   tracking.js        - TrackingManager (Pixel)
   phoneValidator.js  - Validação de telefone
   currency.js        - Formatação de valores monetários
+  db.js              - Cliente Prisma (singleton)
+  api/
+    contactService.js - Criação de Contact no banco
+  validation/
+    schemas.js        - Schemas Zod (validação de formulário)
 context/
   CityContext.js     - Provider de cidades
   WhatsAppContext.js  - Provider WhatsApp
 hooks/
   useTracking.js     - Hook para TrackingManager
+prisma/
+  schema.prisma      - Modelo Contact (Postgres compartilhado)
 components/          - Componentes legados (placeholders)
 ```

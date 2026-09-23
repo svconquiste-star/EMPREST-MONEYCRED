@@ -142,6 +142,23 @@ button {
   color: var(--brand-dark);
 }
 
+/* ── Reject message ── */
+
+.reject-message {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 24px 8px;
+}
+
+.reject-title {
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--text);
+  margin: 0;
+}
+
 .form-group {
   display: grid;
   gap: 6px;

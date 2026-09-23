@@ -24,6 +24,7 @@ export default function Page() {
   const [valorDesejado, setValorDesejado] = useState('');
 
   const [errors, setErrors] = useState({});
+  const [cltRejected, setCltRejected] = useState(false);
 
   const phoneDigits = useMemo(() => String(telefone || '').replace(/\D/g, ''), [telefone]);
   const phoneResult = useMemo(() => validatePhone(phoneDigits), [phoneDigits]);
@@ -92,6 +93,25 @@ export default function Page() {
 
     setErrors({});
 
+    const contactBase = {
+      nome: nome.trim(),
+      ocupacao: ocupacao.trim(),
+      vinculo,
+      telefone: phoneDigits,
+      email: email.trim() || undefined,
+      cidade: cidade.trim(),
+      rendaMensal: String(rendaMensalNumber),
+      valorDesejado: String(valorDesejadoNumber),
+      nomeEmpresa: vinculo === 'PJ' ? empresa.trim() : '',
+    };
+
+    if (vinculo === 'CLT') {
+      // Não abre WhatsApp, não dispara Pixel — só registra no banco para controle.
+      saveContactAsync(contactBase);
+      setCltRejected(true);
+      return;
+    }
+
     const link = buildLink({
       nome: nome.trim(),
       cidade: cidade.trim(),
@@ -105,14 +125,30 @@ export default function Page() {
 
     window.open(link, '_blank', 'noopener,noreferrer');
 
-    if (vinculo === 'PJ') {
-      tracking.trackContact({
-        nome: nome.trim(),
-        telefone: phoneDigits,
-        email: email.trim() || undefined,
-        cidade: cidade.trim(),
-        valorDesejado: valorDesejadoNumber,
+    tracking.trackContact({
+      nome: nome.trim(),
+      telefone: phoneDigits,
+      email: email.trim() || undefined,
+      cidade: cidade.trim(),
+      valorDesejado: valorDesejadoNumber,
+    });
+
+    saveContactAsync({ ...contactBase, whatsappLink: link });
+  };
+
+  const saveContactAsync = async (data) => {
+    try {
+      const response = await fetch('/api/save-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        keepalive: true,
       });
+      if (!response.ok) {
+        console.warn('Erro ao salvar contato:', response.status);
+      }
+    } catch (error) {
+      console.warn('Erro ao conectar com servidor:', error);
     }
   };
 
@@ -212,7 +248,17 @@ export default function Page() {
             </>
           )}
 
-          {step === 2 && (
+          {step === 2 && cltRejected && (
+            <div className="reject-message">
+              <i className="fa-solid fa-circle-info" style={{ color: 'var(--brand)', fontSize: '28px' }}></i>
+              <p className="reject-title">No momento, atendemos apenas autônomos e empresas (PJ)</p>
+              <p className="subtitle">
+                Assim que abrirmos vagas para quem trabalha de carteira assinada (CLT), avisaremos por aqui. Obrigado pelo interesse!
+              </p>
+            </div>
+          )}
+
+          {step === 2 && !cltRejected && (
             <>
               <div className="form-group">
                 <label className="label" htmlFor="ocupacao">
