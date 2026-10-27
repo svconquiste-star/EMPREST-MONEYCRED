@@ -22,6 +22,7 @@ export default function Page() {
   const [empresa, setEmpresa] = useState('');
   const [rendaMensal, setRendaMensal] = useState('');
   const [valorDesejado, setValorDesejado] = useState('');
+  const [motivo, setMotivo] = useState('');
 
   const [errors, setErrors] = useState({});
   const [cltRejected, setCltRejected] = useState(false);
@@ -50,7 +51,7 @@ export default function Page() {
     (vinculo === 'CLT' || vinculo === 'PJ') &&
     rendaMensalNumber > 0 &&
     valorDesejadoNumber > 0 &&
-    (vinculo !== 'PJ' || empresa.trim().length > 1)
+    (vinculo !== 'PJ' || (empresa.trim().length > 1 && motivo.trim().length > 1))
   );
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function Page() {
     if (!rendaMensalNumber) newErrors.rendaMensal = 'Renda mensal é obrigatória';
     if (!valorDesejadoNumber) newErrors.valorDesejado = 'Valor desejado é obrigatório';
     if (vinculo === 'PJ' && !empresa.trim()) newErrors.empresa = 'Nome da empresa é obrigatório';
+    if (vinculo === 'PJ' && !motivo.trim()) newErrors.motivo = 'Motivo é obrigatório';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -103,6 +105,7 @@ export default function Page() {
       rendaMensal: String(rendaMensalNumber),
       valorDesejado: String(valorDesejadoNumber),
       nomeEmpresa: vinculo === 'PJ' ? empresa.trim() : '',
+      motivo: vinculo === 'PJ' ? motivo.trim() : '',
     };
 
     if (vinculo === 'CLT') {
@@ -117,8 +120,8 @@ export default function Page() {
       cidade: cidade.trim(),
       telefone: phoneDisplay || phoneDigits,
       ocupacao: ocupacao.trim(),
-      vinculo,
       empresa: empresa.trim(),
+      motivo: motivo.trim(),
       rendaMensal,
       valorDesejado,
     });
@@ -348,6 +351,22 @@ export default function Page() {
                 />
                 {errors.valorDesejado && <span className="error-message">{errors.valorDesejado}</span>}
               </div>
+
+              {vinculo === 'PJ' && (
+                <div className="form-group">
+                  <label className="label" htmlFor="motivo">
+                    Motivo *
+                  </label>
+                  <input
+                    id="motivo"
+                    className={`input ${errors.motivo ? 'input-error' : ''}`}
+                    value={motivo}
+                    onChange={(e) => setMotivo(e.target.value)}
+                    placeholder="Ex: Reformar a loja"
+                  />
+                  {errors.motivo && <span className="error-message">{errors.motivo}</span>}
+                </div>
+              )}
 
               <div className="cta">
                 <button
